@@ -7,12 +7,14 @@
 feat(embedding, expression, legend_name = "Expression")
 }
 \arguments{
-\item{embedding}{A matrix/data.frame/tibble (or anything that can be reasonably
-converted with \code{data.frame(embedding)}) with exactly two columns.
-If colnames are missing, the axis will be named "Dim1" and "Dim2".}
+\item{embedding}{A matrix/data.frame/tibble/... with exactly two columns.
+If colnames are missing, the axis will be named "Dim1" and "Dim2".
+Other classes than matrix/data.frame/tibble are possible, as long as
+\code{data.frame(embedding)}) produces a numeric data.frame.}
 
-\item{expression}{Numeric vector with expression values of the gene of interest.
-one element per cell. Usually normalized, recommended normalization is
+\item{expression}{Numeric vector with expression values of the gene of
+interest. Order has to correspond to the row order in \code{embedding}.
+Typically, \code{expression} is normalized gene expression and we recommend
 \code{k/s/mean(1/s)}, where \code{k} are UMI counts for the gene of interest
 and \code{s} are totalUMI of the cell (aka library size).}
 
@@ -26,14 +28,14 @@ A \code{ggplot2} object storing a colored scatter plot.
 Highligh gene expression data in a 2D-embedding (UMAP, tSNE< etc.).
 }
 \details{
-This function allows little customization on purpose, because it
+This function discourages customization on purpose, because it
 bundles geoms, themes and settings that I found important for
 visualizing gene expression in scRNAseq data:
 
 \itemize{
  \item coord_fixed, to avoid distortion of embeddings
  \item geom_point with size=.4, to ameliorate overplotting
- \item No axis ticks or background grid, because distances and axis units
+ \item No background grid, because distances and axis units
  in embeddings do not
  carry meaning for most dimensionality reduction techniques.
  \item Intensity-coded color scales (viridis) displayed with
@@ -63,7 +65,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ggplot2]{ggplot}}
- \code{\link[scUtils]{closed_labels}}
+\code{\link[ggplot2]{ggplot}},
+ \code{\link[scUtils]{closed_labels}},
  \code{\link[scUtils]{closed_breaks_log2}}
 }
