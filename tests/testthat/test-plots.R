@@ -8,18 +8,20 @@ test_that("zero expression is allowed, negative is not", {
   expect_true(min(p$data$expression) > 0)
 })
 
-
-test_that("closed_breaks_log output is as expected",{
-  expect_equal( closed_breaks_log(c(.9, 200.1), base= 2), c(.9, 2, 8, 32, 200.1) )
-  expect_equal(closed_breaks_log(c(.1, 15), base=2), c(.1, .25, 1, 4, 15))
-  expect_equal(closed_breaks_log(c(.1, 500), base=2), c(.1, .5, 4, 32, 500))
-  expect_equal(closed_breaks_log(c(.12444, 977.223), base=2),
-               c(.12444, .5, 4, 32, 256, 977.223))
-  expect_equal( closed_breaks_log(c(.038, 14.8), base= 2),
-                c(.038, .125, .5, 2, 14.8) )
-  # zeros throw error; excluding them is not job of the breaks function
-  expect_error( closed_breaks_log(c(0, 4.9), base= 2) )
+test_that("closed_breaks_log2 output is as expected", {
+    expect_equal(closed_breaks_log2(c(.9, 200.1)), c(.9, 4, 16, 64, 200.1))
+    expect_equal(closed_breaks_log2(c(.1, 15)), c(.1, .25, 1, 4, 15))
+    expect_equal(closed_breaks_log2(c(.1, 500)), c(.1, 1, 8, 64, 500))
+    expect_equal(closed_breaks_log2(c(.01, 5000)), c(.01, .25, 8, 256, 5000))
+    # falling back to computing mean works (to avoid less than three breaks):
+    expect_equal(round(closed_breaks_log2(c(10, 15)),1), c(10, 12.2, 15))
+    expect_equal(round(closed_breaks_log2(c(.01, .015)),3), c(.01, .012, .015))
+    # zeros throw error; excluding them is not job of the breaks function
+    expect_error( closed_breaks_log2(c(0, 4.9)), regexp = "finite number" )
 })
+
+
+
 
 test_that("closed_labels output is as expected",{
   expect_equal( closed_labels(c(.9, 2, 8, 32, 200.1)), c(".9", "2", "8", "32", "200.1") )
@@ -32,21 +34,9 @@ test_that("closed_labels output is as expected",{
   expect_equal( closed_labels(c(426, 10000, 161333)), c("426", "1e+04", "1.6e+05") )
 })
 
-test_that("in some cases closed_breaks_log returns less than 5 breaks",{
-  # not sure yet if this is pleasant behavior, more breaks would be nicer I think.
-  # It's just when I implemented the closed_breaks_log function at 2 am, this
-  # is where I drew the line and told myself to accept it.
-  expect_equal( closed_breaks_log(c(.9, 200.1), base=10), c(.9, 10, 200.1) )
-  expect_equal(closed_breaks_log(c(.244, 101.223), base=2),
-               c(.244, 1, 8, 101.223))
-
-})
 
 
-test_that("falling back to log_sub_breaks works", {
-  expect_equal(closed_breaks_log(c(.1, .244), base=2), c(0.0625, 0.125, 0.25))
-  expect_equal(closed_breaks_log(c(100, 150), base=2), c(64, 128, 256))
-})
+
 
 
 test_that("all kinds of colnames are allowed", {

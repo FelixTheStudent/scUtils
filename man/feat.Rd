@@ -43,7 +43,7 @@ visualizing gene expression in scRNAseq data:
  \item Color scale breaks are displayed as 'closed interval', i.e.
  \code{max(expression)} and \code{min(expression)} are the most extreme
  breaks. Rounding makes them human-readable. This functionality is provided
- by \link[scUtils]{closed_breaks_log} and \link[scUtils]{closed_labels}.
+ by \link[scUtils]{closed_breaks_log2} and \link[scUtils]{closed_labels}.
       }
 
 If you insist on customizing, think of this function as a great starting point, you can simply
@@ -65,5 +65,5 @@ if(interactive()){
 \seealso{
 \code{\link[ggplot2]{ggplot}}
  \code{\link[scUtils]{closed_labels}}
- \code{\link[scUtils]{closed_breaks_log}}
+ \code{\link[scUtils]{closed_breaks_log2}}
 }

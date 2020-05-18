@@ -51,7 +51,7 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) 
 #'  \item Color scale breaks are displayed as 'closed interval', i.e.
 #'  \code{max(expression)} and \code{min(expression)} are the most extreme
 #'  breaks. Rounding makes them human-readable. This functionality is provided
-#'  by \link[scUtils]{closed_breaks_log} and \link[scUtils]{closed_labels}.
+#'  by \link[scUtils]{closed_breaks_log2} and \link[scUtils]{closed_labels}.
 #'       }
 #'
 #' If you insist on customizing, think of this function as a great starting point, you can simply
@@ -71,7 +71,7 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) 
 #' @seealso
 #'  \code{\link[ggplot2]{ggplot}}
 #'  \code{\link[scUtils]{closed_labels}}
-#'  \code{\link[scUtils]{closed_breaks_log}}
+#'  \code{\link[scUtils]{closed_breaks_log2}}
 #' @rdname feat
 #' @export
 #' @importFrom assertthat assert_that
@@ -104,151 +104,85 @@ feat <- function(embedding, expression, legend_name="Expression") {
     ggplot2::xlab(axis_names[1]) + ggplot2::ylab(axis_names[2])+
     viridis::scale_color_viridis(
       trans="log2",
-      breaks = function(lims) closed_breaks_log(lims, base=2),
+      breaks = closed_breaks_log2,
       labels=function(br) closed_labels(br, min_is_zero = has_zeros),
       na.value=viridisLite::viridis(1),
-      name = legend_name)
+      name = legend_name) +
+    ggplot2::theme(
+      # axis.text =  ggplot2::element_text(color="grey"),
+      # axis.ticks = ggplot2::element_line(color="grey"),
+      # grey background without grid:
+      panel.background = ggplot2::element_rect(fill="grey90"),
+      panel.grid = ggplot2::element_blank() )
 
 }
 
 
 
-#' @title Closed Breaks for log scales
-#' @description Same algorithm as in \link[scales]{breaks_log}, but
-#' forces inclusion of upper and lower limits (displaying the closed interval).
-#' Including boundaries is particularly useful for ggplot2's color/fill, as it
-#' emphasizes the meaning of maximal/minimal color intensities, see examples.
-#' @param lims Vector with lower and upper limits of the data that you want
-#' breaks for.
-#' @param n Number of breaks to aim for. The actual number will be what the
-#' algorithm can accomodate, see \code{?scales::breaks_log()}. Default: 5
-#' @param base The base of logarithm to use. Default: 10
+
+
+
+
+
+
+
+
+
+
+#' @title Closed breaks for log scale
+#' @description Finds breaks that are powers of 2,
+#' and forces inclusion of upper and lower limits
+#' (displaying the closed interval).
+#' Including limits specifically is particularly useful for ggplot2's color/fill,
+#' as it
+#' emphasizes the meaning of maximal/minimal color intensities (see examples).
+#' @param lims Vector with lower and upper limits (in that order) of the data
+#' that you want breaks for.
 #' @return Numeric vector with breaks.
-#' @details Code adapted from scales::breaks_log, original code is
-#' [licensed by Hadley Wickham](https://cran.r-project.org/web/packages/scales/LICENSE),
-#' changes are licensed by Felix Frauhamer.
-#' Original license is MIT:
-#'
-#' \itemize{
-#'   \item YEAR: 2010-2016
-#'   \item COPYRIGHT HOLDER: Hadley Wickham}
-#'
-#'
-#' The scUtils pacakges uses this function to color by gene expression,
+#' @details The \code{feat} function uses \code{closed_breaks_log2} to color by
+#' gene expression,
 #' where the maximal expression gives valuable
-#' intuition for a gene's overall expression strength. For x- or y-axis, I still
-#' recommend breaks_log from the scales package.
+#' intuition for a gene's overall expression strength.
+#' For x- or y-axis (\code{scale_*_log10}),
+#' I still recommend \code{breaks_log} from the scales package.
 #' @examples
 #' \dontrun{
 #' if(interactive()){
 #' # closed breaks include maximum, breaks_log do not:
-#' closed_breaks_log(lims = c(.01, 977.1))
+#' closed_breaks_log2(lims = c(.01, 977.1))
 #' scales::breaks_log()(c(.01, 977.1))
-#' # closed_breaks_log intends to replace outer breaks with actual limits:
-#' round(scales::breaks_log(base=2)(c(.01, 977.1)), 3)
-#' closed_breaks_log(lims = c(.01, 977.1), base=2)
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[assertthat]{assert_that}}
-#' @rdname closed_breaks_log
+#'  \code{\link[scUtils]{closed_labels}}
+#' @rdname closed_breaks_log2
 #' @export
 #' @importFrom assertthat assert_that
-closed_breaks_log <- function (lims, n=5, base=10)
-{
-  raw_rng <- suppressWarnings(range(lims, na.rm = TRUE))
-  if (any(!is.finite(raw_rng))) {
-    return(numeric())
+closed_breaks_log2 <- function(lims) {
+   lim1 <- lims[1]; lim2 <- lims[2]
+  # get powers of two, but keep original lims:
+  breaks <- 2^round(seq(log2(lim1), log2(lim2), length.out = 5))
+  breaks[1] <- lim1
+  breaks[length(breaks)] <- lim2
+  # remove rounding above artifacts: non-uniqueness and breaks outside of lims
+  breaks <- breaks[breaks >= lim1 & breaks <= lim2]
+  breaks <- unique(breaks)
+  # only two breaks looks poor; we'll place one more exactly in the middle:
+  if(length(breaks) < 3){
+    breaks <- c(lims[1], 2^mean(log2(lims)), lims[2])
   }
-  assertthat::assert_that(min(lims) > 0) # added this line
-  rng <- log(raw_rng, base = base)
-  min <- floor(rng[1])
-  max <- ceiling(rng[2])
-  if (max == min)
-    return(base^min)
-  by <- floor((max - min)/n) + 1
-  breaks <- base^seq(min, max, by = by)
-  # remove breaks too close to original boundaries:
-  breaks <- breaks[breaks > base * base^rng[1] &  breaks < base^rng[2]/base ]
-  # specifically add original min and max:
-  breaks <- c(base^rng[1], breaks, base^rng[2])
-  relevant_breaks <- base^rng[1] <= breaks & breaks <= base^rng[2]
-  if (sum(relevant_breaks) >= (n - 2)) {
-    return(breaks)}
-  while (by > 1) {
-    by <- by - 1
-    breaks <- base^seq(min, max, by = by)
-    relevant_breaks <- base^rng[1] <= breaks & breaks <=
-      base^rng[2]
-    if (sum(relevant_breaks) >= (n - 2))
-      return(breaks)
-  }
-
-  return(log_sub_breaks(rng, n = n, base = base))
+  return(breaks)
 }
 
-
-
-#' @author Thierry Onkelinx, \email{thierry.onkelinx@inbo.be}
-#' @noRd
-#' @description Code adopted from the R package "scales", version 1.1.1.9000.
-#' License of the scales package is MIT with:
-#' YEAR: 2010-2016
-#' COPYRIGHT HOLDER: Hadley Wickham
-#' @param rng The range.
-#' @param n Number of breaks, Default: 5
-#' @param base base of logarithm, Default: 10
-#' @return Vector of breaks
-#' @details Internal function.
-#' @examples
-#' @seealso
-#'  \code{\link[scales]{breaks_extended}}
-#' @importFrom scales extended_breaks
-log_sub_breaks <- function (rng, n = 5, base = 10)
-{
-  min <- floor(rng[1])
-  max <- ceiling(rng[2])
-  if (base <= 2) {
-    return(base^(min:max))
-  }
-  steps <- 1
-  delta <- function(x) {
-    min(diff(log(sort(c(x, steps, base)), base = base)))
-  }
-  candidate <- seq_len(base)
-  candidate <- candidate[1 < candidate & candidate < base]
-  while (length(candidate)) {
-    best <- which.max(vapply(candidate, delta, 0))
-    steps <- c(steps, candidate[best])
-    candidate <- candidate[-best]
-    breaks <- as.vector(outer(base^seq(min, max), steps))
-    relevant_breaks <- base^rng[1] <= breaks & breaks <=
-      base^rng[2]
-    if (sum(relevant_breaks) >= (n - 2)) {
-      break
-    }
-  }
-  if (sum(relevant_breaks) >= (n - 2)) {
-    breaks <- sort(breaks)
-    lower_end <- pmax(min(which(base^rng[1] <= breaks)) -
-                        1, 1)
-    upper_end <- pmin(max(which(breaks <= base^rng[2])) +
-                        1, length(breaks))
-    breaks[lower_end:upper_end]
-  }
-  else {
-    scales::extended_breaks(n = n)(base^rng)
-  }
-}
 
 
 
 
 
 #' @title Human-readable labels for closed breaks
-#' @description Complements the closed_breaks_log function.
+#' @description Complements the closed_breaks_log2 function.
 #' @param x Vector of breaks for which to produce labels.
-#' Typically, this is the output of \code{closed_breaks_log}.
+#' Typically, this is the output of \code{closed_breaks_log2}.
 #' @param min_is_zero Should the smallest break be
 #' displayed as zero (TRUE) or as the actual value (FALSE). Default: FALSE
 #' @return Character vector with labels, used by \code{feat} function.
@@ -267,9 +201,10 @@ log_sub_breaks <- function (rng, n = 5, base = 10)
 #'  \code{\link[scales]{label_scientific}}
 #'  \code{\link[scales]{label_number_auto}}
 #' @rdname closed_labels
-#' @export
+#' @alias closed_breaks_label
 #' @importFrom dplyr case_when
 #' @importFrom scales scientific
+#' @export
 closed_labels <- function(x, min_is_zero = FALSE) {
   if (!requireNamespace("dplyr", quietly = TRUE)) {
     stop("dplyr must be installed for this functionality.")
@@ -288,40 +223,6 @@ closed_labels <- function(x, min_is_zero = FALSE) {
   # remove leading zero because it looks nicer:
   return(base::gsub("^0.", ".", x))
 }
-
-
-
-
-
-
-
-# quick tests -------------------------------------------------------------
-# see if breaks and labels look pleasant
-# check_pleasentness <- function(lim1, lim2, base=10){
-#   ggplot2::ggplot(data= data.frame(x=1:15, y =seq(lim1, lim2, length.out = 15)),
-#          ggplot2::aes(x, x, col=y))+ggplot2::geom_point(size=5) +
-#   viridis::scale_color_viridis(trans="log2",
-#                        breaks=function(lims) {print(lims)
-#                          closed_breaks_log(lims, n=5, base)},
-#                        labels = closed_labels)
-#
-# }
-# # compare to scales::label_number_auto
-# check_pleasentness_auto <- function(lim1, lim2, base=10){
-#   ggplot2::ggplot(data= data.frame(x=1:15, y =seq(lim1, lim2, length.out = 15)),
-#                   ggplot2::aes(x, x, col=y))+ggplot2::geom_point(size=5) +
-#     viridis::scale_color_viridis(trans="log2",
-#                                  breaks=function(lims) {print(lims)
-#                                    closed_breaks_log(lims, n=5, base)},
-#                                  labels = scales::label_number_auto())
-#
-# }
-# scUtils:::check_pleasentness(.244, 977.223,2)
-# scUtils:::check_pleasentness(.244, 101.223,2)
-# scUtils:::check_pleasentness(.9, 200.1, 2)
-# scUtils:::check_pleasentness(.12444, 977.223, base=2)
-# scUtils:::check_pleasentness(.1,.244, 2)
-
 
 
 

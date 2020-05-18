@@ -8,7 +8,7 @@ closed_labels(x, min_is_zero = FALSE)
 }
 \arguments{
 \item{x}{Vector of breaks for which to produce labels.
-Typically, this is the output of \code{closed_breaks_log}.}
+Typically, this is the output of \code{closed_breaks_log2}.}
 
 \item{min_is_zero}{Should the smallest break be
 displayed as zero (TRUE) or as the actual value (FALSE). Default: FALSE}
@@ -17,7 +17,7 @@ displayed as zero (TRUE) or as the actual value (FALSE). Default: FALSE}
 Character vector with labels, used by \code{feat} function.
 }
 \description{
-Complements the closed_breaks_log function.
+Complements the closed_breaks_log2 function.
 }
 \details{
 This is a helper for the \code{feat} function.
