@@ -14,7 +14,7 @@ There was 1 NOTE.
   
   This is my first CRAN package.
   The email address is on my birth name, Wertek. I have used it
-  for > 1 decade and will continue using it perpetually.
+  for more than a decade and will continue using it perpetually.
 
 
 ## Downstream dependencies
