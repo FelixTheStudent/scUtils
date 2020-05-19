@@ -203,7 +203,6 @@ closed_breaks_log2 <- function(lims) {
 #'  \code{\link[scales]{label_scientific}}
 #'  \code{\link[scales]{label_number_auto}}
 #' @rdname closed_labels
-#' @alias closed_breaks_label
 #' @importFrom dplyr case_when
 #' @importFrom scales scientific
 #' @export
