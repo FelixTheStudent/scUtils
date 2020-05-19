@@ -1,7 +1,5 @@
 # known bugs -------------------------------------
-# closed_breaks_log(c(.1, 10))   # should NOT return 30
-# closed_breaks_log(c(0.100, 0.244), base=2) # should return .1 and .24 not .0625 and .25
-
+#  closed_breaks_log2(c(-0.1, .244)) # crashes uncontrolled, should throw controlled error
 
 # backlog ---------------------------------------
 #  plain_umap
