@@ -1,4 +1,5 @@
 ## Test environments
+* win-builder Windows, R-devel 
 * R-hub builder, Windows Server 2008 R2 SP1, R-devel, 32/64 bit
 * R-hub builder, Ubuntu Linux 16.04 LTS, R-release, GCC
 * R-hub builder, Fedora Linux, R-devel, clang, gfortran
