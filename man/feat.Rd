@@ -25,7 +25,7 @@ of the displayed gene.}
 A \code{ggplot2} object storing a colored scatter plot.
 }
 \description{
-Highligh gene expression data in a 2D-embedding (UMAP, tSNE< etc.).
+Highlight gene expression data in a 2D-embedding (UMAP, tSNE< etc.).
 }
 \details{
 This function discourages customization on purpose, because it
