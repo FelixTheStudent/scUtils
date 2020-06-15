@@ -30,13 +30,9 @@ For x- or y-axis (\code{scale_*_log10}),
 I still recommend \code{breaks_log} from the scales package.
 }
 \examples{
-\dontrun{
-if(interactive()){
 # closed breaks include maximum, breaks_log do not:
 closed_breaks_log2(lims = c(.01, 977.1))
 scales::breaks_log()(c(.01, 977.1))
- }
-}
 }
 \seealso{
 \code{\link[scUtils]{closed_labels}}

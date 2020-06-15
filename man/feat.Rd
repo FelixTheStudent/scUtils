@@ -25,7 +25,7 @@ of the displayed gene.}
 A \code{ggplot2} object storing a colored scatter plot.
 }
 \description{
-Highlight gene expression data in a 2D-embedding (UMAP, tSNE< etc.).
+Highlight gene expression data in a 2D-embedding (UMAP, tSNE, etc.).
 }
 \details{
 This function discourages customization on purpose, because it
@@ -53,16 +53,12 @@ copy-paste the code after typing \code{feat} into your
 console.
 }
 \examples{
-\dontrun{
-if(interactive()){
  # expression goes from 0 to 22:
  set.seed(100)
  feat(matrix(rnorm(2000, c(.1, 3)), ncol=2), rpois(1000, c(.1, 11)))
  # expression goes from 2 to 52:
  set.seed(100)
  feat(matrix(rnorm(2000, c(.1, 3)), ncol=2), rpois(1000, c(10, 31)))
- }
-}
 }
 \seealso{
 \code{\link[ggplot2]{ggplot}},

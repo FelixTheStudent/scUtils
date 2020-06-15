@@ -26,12 +26,8 @@ to avoid taking the logarithm of zero. \code{min_is_zero} can be used to
 display the lowest break of the color scale as zero in these cases.
 }
 \examples{
-\dontrun{
-if(interactive()){
  # human readable output:
  closed_labels(c(.001111,.122, 0.5, 10, 100, 1800))
- }
-}
 }
 \seealso{
 \code{\link[scales]{label_scientific}}
