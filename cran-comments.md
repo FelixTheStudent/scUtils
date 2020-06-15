@@ -8,6 +8,8 @@ This is a resubmission. In this version I have:
 * removed \dontrun{} from all instances except one (where it's actually necessary)
 * added Simon Anders as contributor to DESCRIPTION file.
 
+I tested all changes again with devtools::check_rhub() and devtools::check_win_release().
+
 
 ## Test environments
 * win-builder Windows, R-devel 
