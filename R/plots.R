@@ -23,7 +23,7 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) 
 
 
 #' @title Feature Plot
-#' @description Highlight gene expression data in a 2D-embedding (UMAP, tSNE< etc.).
+#' @description Highlight gene expression data in a 2D-embedding (UMAP, tSNE, etc.).
 #' @param embedding A matrix/data.frame/tibble/... with exactly two columns.
 #' If colnames are missing, the axis will be named "Dim1" and "Dim2".
 #' Other classes than matrix/data.frame/tibble are possible, as long as
