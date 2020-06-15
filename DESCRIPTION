@@ -2,8 +2,11 @@ Package: scUtils
 Type: Package
 Title: Utility Functions for Single-Cell RNA Sequencing Data
 Version: 0.1.0
-Author: Felix Frauhammer
-Maintainer: Felix Frauhammer <felixwertek@gmail.com>
+Authors@R: c(
+  person("Felix", "Frauhammer", email = "felixwertek@gmail.com",
+         role = c("aut", "cre")),
+  person("Simon", "Anders", email = "s.anders@zmbh.uni-heidelberg.de",
+         role = c("ctb"), comment = "Simon Anders wrote the colVars_spm function.") )
 Description: Analysis of single-cell RNA sequencing data can be simple and
     clear with the right utility functions. This package collects such functions,
     aiming to fulfill the following criteria:
