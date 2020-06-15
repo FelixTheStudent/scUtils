@@ -60,16 +60,12 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) 
 #' copy-paste the code after typing \code{feat} into your
 #' console.
 #' @examples
-#' \dontrun{
-#' if(interactive()){
 #'  # expression goes from 0 to 22:
 #'  set.seed(100)
 #'  feat(matrix(rnorm(2000, c(.1, 3)), ncol=2), rpois(1000, c(.1, 11)))
 #'  # expression goes from 2 to 52:
 #'  set.seed(100)
 #'  feat(matrix(rnorm(2000, c(.1, 3)), ncol=2), rpois(1000, c(10, 31)))
-#'  }
-#' }
 #' @seealso
 #'  \code{\link[ggplot2]{ggplot}},
 #'  \code{\link[scUtils]{closed_labels}},
@@ -148,13 +144,9 @@ feat <- function(embedding, expression, legend_name="Expression") {
 #' For x- or y-axis (\code{scale_*_log10}),
 #' I still recommend \code{breaks_log} from the scales package.
 #' @examples
-#' \dontrun{
-#' if(interactive()){
 #' # closed breaks include maximum, breaks_log do not:
 #' closed_breaks_log2(lims = c(.01, 977.1))
 #' scales::breaks_log()(c(.01, 977.1))
-#'  }
-#' }
 #' @seealso
 #'  \code{\link[scUtils]{closed_labels}}
 #' @rdname closed_breaks_log2
@@ -193,12 +185,8 @@ closed_breaks_log2 <- function(lims) {
 #' to avoid taking the logarithm of zero. \code{min_is_zero} can be used to
 #' display the lowest break of the color scale as zero in these cases.
 #' @examples
-#' \dontrun{
-#' if(interactive()){
 #'  # human readable output:
 #'  closed_labels(c(.001111,.122, 0.5, 10, 100, 1800))
-#'  }
-#' }
 #' @seealso
 #'  \code{\link[scales]{label_scientific}}
 #'  \code{\link[scales]{label_number_auto}}

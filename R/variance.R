@@ -4,13 +4,15 @@
 #' a dgCMatrix (from Matrix package).
 #' @param spm A sparse matrix of class dgCMatrix from the Matrix package.
 #' @return Vector with variances.
-#' @details Code written by Simon Anders and Felix Frauhammer.
+#' @details The only supported format currently is dgCMatrix. While the Matrix
+#' package has other formats, this one is used for scRNAseq raw count data.
+#' Function code written by Simon Anders.
 #' @examples
-#' \dontrun{
-#' if(interactive()){
 #' library(Matrix)
 #'  mat <- as(matrix(rpois(900,1), ncol=3), "dgCMatrix")
 #'  colVars_spm(mat)
+#' \dontrun{
+#' if(interactive()){
 #'  # see speed-up:
 #'  microbenchmark::microbenchmark(colVars_spm(mat), apply(mat,2,var))
 #'  }
