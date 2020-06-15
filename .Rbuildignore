@@ -4,3 +4,4 @@ cran-comments.md
 backlog.R
 ^README\.Rmd$
 develop_breaks.R
+^CRAN-RELEASE$
