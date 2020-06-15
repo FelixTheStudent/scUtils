@@ -1,3 +1,14 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* removed inappropriate letter capitalization in DESCRIPTION file.
+* replaced inappropriate quotes by undirected single quotes in DESCRIPTION file.
+* removed typos and lack of clarity from function documentation in files
+  plots.R and variance.R.
+* removed \dontrun{} from all instances except one (where it's actually necessary)
+* added Simon Anders as contributor to DESCRIPTION file.
+
+
 ## Test environments
 * win-builder Windows, R-devel 
 * R-hub builder, Windows Server 2008 R2 SP1, R-devel, 32/64 bit
