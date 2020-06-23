@@ -1,4 +1,14 @@
 ## Resubmission
+
+This is a second resubmission. In this version I have:
+
+* removed if(interactive()){} completely as suggested
+* removed \dontrun and the example completely. This is going further
+  than replacing it with \donttest as suggested, because the example is not relevant and
+  not worth adding the microbenchmark package as a dependency. Thanks for the hint!
+
+
+## Former resubmissions
 This is a resubmission. In this version I have:
 
 * removed inappropriate letter capitalization in DESCRIPTION file.

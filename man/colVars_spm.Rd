@@ -22,17 +22,12 @@ a dgCMatrix (from Matrix package).
 \details{
 The only supported format currently is dgCMatrix. While the Matrix
 package has other formats, this one is used for scRNAseq raw count data.
+Function code written by Simon Anders.
 }
 \examples{
 library(Matrix)
  mat <- as(matrix(rpois(900,1), ncol=3), "dgCMatrix")
  colVars_spm(mat)
-\dontrun{
-if(interactive()){
- # see speed-up:
- microbenchmark::microbenchmark(colVars_spm(mat), apply(mat,2,var))
- }
-}
 }
 \seealso{
 \code{vignette("Intro2Matrix", package="Matrix")}

@@ -11,12 +11,6 @@
 #' library(Matrix)
 #'  mat <- as(matrix(rpois(900,1), ncol=3), "dgCMatrix")
 #'  colVars_spm(mat)
-#' \dontrun{
-#' if(interactive()){
-#'  # see speed-up:
-#'  microbenchmark::microbenchmark(colVars_spm(mat), apply(mat,2,var))
-#'  }
-#' }
 #' @rdname colVars_spm
 #' @seealso \code{vignette("Intro2Matrix", package="Matrix")}
 #' \link[Matrix]{CsparseMatrix-class}
