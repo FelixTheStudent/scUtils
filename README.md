@@ -9,7 +9,7 @@
 
 The goal of scUtils is to collect utility functions that make
 single-cell RNAseq data analysis simple and understandable for anyone.
-At the same time, I will use it when writing my PhD thesis.
+I will soon add more functions for the typical scRNAseq analysis workflow.
 
 ## Installation
 
