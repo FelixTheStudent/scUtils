@@ -1,7 +1,7 @@
 Package: scUtils
 Type: Package
 Title: Utility Functions for Single-Cell RNA Sequencing Data
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
   person("Felix", "Frauhammer", email = "felixwertek@gmail.com",
          role = c("aut", "cre")),
